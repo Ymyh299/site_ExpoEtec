@@ -12,4 +12,4 @@ async function getImage(){
 
 }
 
-setInterval(getImage, 600)
+setInterval(getImage, 33)
