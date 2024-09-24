@@ -1,7 +1,7 @@
 @echo off
 echo Instalando dependências do Python...
 cd IA
-pip install mediapipe requests cv2
+pip install mediapipe requests opencv-python
 
 if errorlevel 1 (
     cls

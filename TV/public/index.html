@@ -1,14 +1,69 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Expoetec 2024</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="assets/scripts/tailwindcss.js"></script>
+  <link rel="stylesheet" type="text/css" href="assets/styles/base.css" />
+  <link rel="stylesheet" type="text/css" href="assets/styles/demo4.css" />
+  <!-- <script>
+    document.documentElement.className = "js";
+    var supportsCssVars = function() {
+      var e, t = document.createElement("style");
+      return t.innerHTML = "root: { --tmp-var: bold; }", document.head.appendChild(t), e = !!(window.CSS && window.CSS.supports && window.CSS.supports("font-weight", "var(--tmp-var)")), t.parentNode.removeChild(t), e
+    };
+    supportsCssVars() || alert("Please view this demo in a modern browser that supports CSS Variables.");
+  </script> -->
+
+  <title>Expoetec 2024 - 2° IPI</title>
 </head>
+
 <body>
-    <form action="/setGender" method="post">
-        <input type="text" name="genero" value="rock">
-        <button>asd</button>
-    </form>
+    <div class="content content--canvas"></div>
+
+    <header class="w-screen h-[20vh] flex justify-center items-center absolute top-0">
+      <h1 class="font-sans text-xl text-white">Expoetec 2024 - 2° IPI</h1>
+    </header>
+    <main class="h-[60vh] w-screen flex justify-evenly items-center mt-[20vh]">
+      <div class="feedback w-[40vw] h-[50vh] bg-transparent backdrop-blur-sm border-white border-solid border-[1px] rounded-xl flex items-center justify-center">
+        <img src="assets/imgs/Untitled.png" id="feedback" class="w-[40vw] h-[50vh] rounded-xl">
+      </div>
+      <div class="genero w-[40vw] h-[50vh] bg-transparent backdrop-blur-sm border-white border-solid border-[1px] rounded-xl flex items-center justify-center">
+        <p class="text-white">Genero escolhido</p>
+      </div>
+    </main>
+    <footer class="h-[20vh] w-screen flex items-center relative">
+      <div class="cont flex items-center justify-around text-center text-white gap-[1vw] absolute right-3">
+        <h2>Veja em tempo real <br> o que as pessoas estão <br> escolhendo!</h2>
+        <img src="assets/imgs/Untitled.png" alt="" srcset="" class="h-[14vh]">
+      </div>
+
+    </footer>
+  
+
+  <script src="assets/scripts/noise.min.js"></script>
+  <script src="assets/scripts/util.js"></script>
+  <script src="assets/scripts/coalesce.js"></script>
+  <script src="assets/scripts/script.js"></script>
+
 </body>
+
+<!-- R4c1al -->
+<!--
+  _____                     
+ |_   _|__   __ _  __ _ ___ 
+   | |/ _ \ / _` |/ _` / __|
+   | | (_) | (_| | (_| \__ \
+   |_|\___/ \__, |\__,_|___/
+            |___/           
+-->
+<!-- 
+ ____  __.         .___       
+|    |/ _|____   __| _/____   
+|      < /  _ \ / __ |\__  \  
+|    |  (  <_> ) /_/ | / __ \_
+|____|__ \____/\____ |(____  /
+        \/          \/     \/ 
+ -->
 </html>

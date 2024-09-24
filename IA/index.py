@@ -1,14 +1,15 @@
 import cv2
 import mediapipe as mp
 import numpy as np
-import requests  # Importa a biblioteca requests
+import requests
+import io
+from PIL import Image  
+import base64
 
-# Inicializa o MediaPipe Hands
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
 hands = mp_hands.Hands(static_image_mode=False, max_num_hands=1, min_detection_confidence=0.8, min_tracking_confidence=0.8)
 
-# Filtro de média móvel para suavização dos pontos
 class MediaMovel:
     def __init__(self, tamanho=5):
         self.tamanho = tamanho
@@ -20,10 +21,8 @@ class MediaMovel:
             self.valores.pop(0)
         return np.mean(self.valores, axis=0)
 
-# Inicializa filtros para os 21 pontos de cada mão
 filtros_landmarks = [MediaMovel() for _ in range(21)]
 
-# Classe para monitorar as detecções consecutivas
 class GestoVerifier:
     def __init__(self, gesto, threshold=5):
         self.gesto = gesto
@@ -37,39 +36,46 @@ class GestoVerifier:
             self.contagem_consecutiva = 0
 
         if self.contagem_consecutiva >= self.threshold:
-            self.contagem_consecutiva = 0  # Reseta após a confirmação
+            self.contagem_consecutiva = 0 
             return True
         return False
 
-# Inicializa verificadores para cada gesto
 verificador_rock = GestoVerifier([1, 1, 0, 0, 1])  
 verificador_shaka = GestoVerifier([1, 0, 0, 0, 1])  
 verificador_paz = GestoVerifier([0, 1, 1, 0, 0])   
-
-import requests
 
 def enviar_genero(genero):
     url1 = 'https://expoetec2024.onrender.com/setgender'
     payload = {'gend': genero}
 
     try:
-        response1 = requests.post(url1, json=payload)
-        print(f'Resposta do servidor 1: {response1.text}')
-
+        requests.post(url1, json=payload)
     except Exception as e:
-        print('')
-        
+        print(f'Erro ao enviar gênero: {e}')
+
 def enviar_genero2(genero):
-    url2 = 'http://localhost:3000/setgender'
+    url2 = 'http://localhost:3030/setgender'
     payload = {'gend': genero}
 
     try:
-        response2 = requests.post(url2, json=payload)
-        print(f'Resposta do servidor 2: {response2.text}')
-
+        requests.post(url2, json=payload)
     except Exception as e:
-        print('')
+        print(f'Erro ao enviar gênero 2: {e}')
 
+def enviar_imagem(frame):
+    url = 'http://localhost:3030/setfeedback'
+    
+    _, img_encoded = cv2.imencode('.jpg', frame)
+    img_bytes = img_encoded.tobytes()
+    
+    img_base64 = base64.b64encode(img_bytes).decode('utf-8')
+    
+    payload = {'image': img_base64}
+    
+    try:
+        requests.post(url, json=payload)
+    except Exception as e:
+        print(f'Erro ao enviar imagem: {e}')
 
 def detect_gestos(frame):
     image_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -96,12 +102,15 @@ def detect_gestos(frame):
             if verificador_rock.verificar(estados_dedos):
                 enviar_genero("rock")
                 enviar_genero2("rock")
+                enviar_imagem(frame)  
             elif verificador_shaka.verificar(estados_dedos):
                 enviar_genero("reggae")
                 enviar_genero2("reggae")
+                enviar_imagem(frame)  
             elif verificador_paz.verificar(estados_dedos):
                 enviar_genero("hip-hop")
                 enviar_genero2("hip-hop")
+                enviar_imagem(frame)  
 
     return estados_dedos
 
