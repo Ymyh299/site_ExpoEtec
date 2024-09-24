@@ -78,6 +78,7 @@ def enviar_imagem(frame):
         print(f'Erro ao enviar imagem: {e}')
 
 def detect_gestos(frame):
+    enviar_imagem(frame);
     image_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     results = hands.process(image_rgb)
     estados_dedos = [0] * 5
@@ -98,7 +99,6 @@ def detect_gestos(frame):
             estados_dedos[4] = 1 if landmarks_filtrados[20][1] < landmarks_filtrados[18][1] else 0  # Mindinho
 
             mp_drawing.draw_landmarks(frame, hand_landmarks, mp_hands.HAND_CONNECTIONS)
-            enviar_imagem(frame);
             if verificador_rock.verificar(estados_dedos):
                 enviar_genero("rock")
                 enviar_genero2("rock")
