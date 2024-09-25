@@ -1,0 +1,8 @@
+@font-face {
+    font-family:'blan';
+    src: url(../fonts/KGBlankSpaceSolid.ttf);
+}
+
+.musics, .titulo{
+    font-family: 'blan';
+}

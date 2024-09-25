@@ -4,9 +4,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
   <script src="assets/scripts/tailwindcss.js"></script>
   <link rel="stylesheet" type="text/css" href="assets/styles/base.css" />
   <link rel="stylesheet" type="text/css" href="assets/styles/demo4.css" />
+  <link rel="stylesheet" href="assets/styles/style.css">
   <!-- <script>
     document.documentElement.className = "js";
     var supportsCssVars = function() {
@@ -20,57 +22,139 @@
 </head>
 
 <body>
-    <div class="content content--canvas"></div>
 
-    <header class="w-screen h-[10vh] flex justify-center items-center absolute top-0">
-      <h1 class="font-sans text-xl text-white">Expoetec 2024 - 2° IPI</h1>
-    </header>
-    <main class="h-[60vh] w-screen flex justify-evenly items-center mt-[10vh]">
-      <div class="feedback w-[40vw] h-[50vh] bg-transparent backdrop-blur-sm border-white border-solid border-[1px] rounded-xl flex items-center justify-center">
-        <img src="" id="feedback" alt="feedback da camera." class="w-[40vw] h-[50vh] rounded-xl">
-      </div>
-      <div class="genero w-[40vw] h-[50vh] bg-transparent backdrop-blur-sm border-white border-solid border-[1px] rounded-xl flex items-center justify-center">
-        <p class="text-white">Genero escolhido</p>
-      </div>
-    </main>
-    <nav class="absolute w-screen h-[10vh] flex items-center justify-evenly">
-      <div class="mao p-[15px] bg-transparent rounded-xl backdrop-blur-sm border-white border-[1px] pr-[25px] pl-[25px] text-2xl">🤘</div>
-      <div class="mao p-[15px] bg-transparent rounded-xl backdrop-blur-sm border-white border-[1px] pr-[25px] pl-[25px] text-2xl">🤙</div>
-      <div class="mao p-[15px] bg-transparent rounded-xl backdrop-blur-sm border-white border-[1px] pt-[25px] pb-[25px] text-2xl rotate-[-90deg]">👍</div>
-      <div class="mao p-[15px] bg-transparent rounded-xl backdrop-blur-sm border-white border-[1px] pr-[25px] pl-[25px] text-2xl">☝️</div>
-      <div class="mao p-[15px] bg-transparent rounded-xl backdrop-blur-sm border-white border-[1px] pr-[25px] pl-[25px] text-2xl">✌️</div>
-    </nav>
-    <footer class="h-[20vh] w-screen flex items-center relative">
-      <div class="cont flex items-center justify-around text-center text-white gap-[1vw] absolute right-[-4vw] bottom-[-12vh] scale-50">
-        <h2 class="text-3xl">Veja em tempo real <br> o que as pessoas estão <br> escolhendo por <br> seu celular!</h2>
-        <img src="assets/imgs/Untitled.png" alt="" srcset="" class="h-[14vh]">
-      </div>
 
-    </footer>
+<div id="alerta" class="alerta m-2 h-[5vh] bg-red-500 max-w-[20vw] items-center justify-center rounded-md backdrop: p-[5vh] text-center absolute top-[3vh] left-[3vw] flex z-10 transition-opacity duration-300 opacity-0">
+    <span class="material-symbols-outlined text-white">priority_high</span>
+    <h1 class="text-white">Você foi registrado nos bad boys! Para ver, entre no QRCode.</h1>
+</div>
+  <div class="content content--canvas"></div>
+
+  <header class="w-screen h-[10vh] flex justify-center items-center absolute top-0">
+    <h1 class="titulo text-xl text-white">Expoetec 2024 - 2° IPI</h1>
+  </header>
   
+  <main class="h-[60vh] w-screen flex justify-evenly items-center mt-[10vh]">
+    <div
+      class="feedback w-[40vw] h-[50vh] bg-transparent backdrop-blur-sm border-white border-solid border-[1px] rounded-xl flex items-center justify-center">
+      <img src="" id="feedback" alt="feedback da camera." class="w-[40vw] h-[50vh] rounded-xl">
+    </div>
+
+    <div class="genero w-[40vw] h-[50vh] bg-transparent backdrop-blur-sm border-white border-solid border-[1px] rounded-xl flex items-center justify-center relative">
+      <p class="text-white absolute top-4 text-3xl font-sans">Rock</p>
+      <hr class="w-[40vw] absolute top-[10vh]">
+      <div class="cont w-[40vw] h-[40vh] absolute bottom-0 flex fo">
+        
+        <div class="row1 w-[20vw] h-[40vh] flex items-center justify-evenly flex-col">
+          
+          <div class="musics">
+            <p class="text-white text-xs">Master os Puppets - Metallica</p>
+          </div>
+
+          <div class="musics">
+            <p class="text-white text-xs">Blitzkrieg bop - Ramones</p>
+          </div>
+
+          <div class="musics">
+            <p class="text-white text-xs">Born to be wild - Steppenwolf</p>
+          </div>
+
+          <div class="musics">
+            <p class="text-white text-xs">Smoke on the water - Deep Purple</p>
+          </div>
+
+          <div class="musics">
+            <p class="text-white text-xs">Highway to hell - AC/DC</p>
+          </div>
+
+        </div>
+
+        <div class="row2 w-[20vw] h-[40vh] flex items-center justify-evenly flex-col">
+
+          <div class="musics">
+            <p class="text-white text-xs">Johnny B. Goode - Chuck Berry</p>
+          </div>
+
+          <div class="musics">
+            <p class="text-white text-xs">Under pressure - Queen</p>
+          </div>
+
+          <div class="musics">
+            <p class="text-white text-xs">Carry on my wayward son - Kansas</p>
+          </div>
+
+          <div class="musics">
+            <p class="text-white text-xs">It's my life - Bon jovi</p>
+          </div>
+
+          <div class="musics">
+            <p class="text-white text-xs">Sweet Child'o mine - Guns n' roses</p>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </main>
+  <nav class="absolute w-screen h-[10vh] flex items-center justify-evenly">
+    <div class="mao p-[15px] bg-transparent rounded-xl backdrop-blur-sm border-white border-[1px] pr-[25px] pl-[25px] text-2xl">
+      🤘</div>
+    <div class="mao p-[15px] bg-transparent rounded-xl backdrop-blur-sm border-white border-[1px] pt-[25px] pb-[25px] text-2xl rotate-[-90deg]">
+      🤙</div>
+    <div class="mao p-[15px] bg-transparent rounded-xl backdrop-blur-sm border-white border-[1px] pr-[25px] pl-[25px] text-2xl">
+      ✌️</div>
+  </nav>
+  <footer class="h-[20vh] w-screen flex items-center relative">
+    <div
+      class="cont flex items-center justify-around text-center text-white gap-[1vw] absolute right-[0vw] bottom-[-5vh] scale-75">
+      <h2 class="text-3xl">Veja aqui a pagina <br> dos bad boys!</h2>
+      <img src="assets/imgs/Untitled.png" alt="" srcset="" class="h-[14vh]">
+    </div>
+      
+  </footer>
+
 
   <script src="assets/scripts/noise.min.js"></script>
   <script src="assets/scripts/util.js"></script>
   <script src="assets/scripts/coalesce.js"></script>
   <script src="assets/scripts/script.js"></script>
+  <script src="assets/scripts/alertaBadboys.js"></script>
 
 </body>
 
-<!-- R4c1al -->
+<!-- 
+  _____            _       _ 
+ |  __ \          (_)     | |
+ | |__) |__ _  ___ _  __ _| |
+ |  _  // _` |/ __| |/ _` | |  mega comedor de niggas
+ | | \ \ (_| | (__| | (_| | |
+ |_|  \_\__,_|\___|_|\__,_|_|
+-->
 <!--
   _____                     
  |_   _|__   __ _  __ _ ___ 
    | |/ _ \ / _` |/ _` / __|
-   | | (_) | (_| | (_| \__ \
+   | | (_) | (_| | (_| \__ \  mega comedor de chefas 🥶
    |_|\___/ \__, |\__,_|___/
             |___/           
 -->
 <!-- 
  ____  __.         .___       
 |    |/ _|____   __| _/____   
-|      < /  _ \ / __ |\__  \  
-|    |  (  <_> ) /_/ | / __ \_
+|      < /  _ \ / __ |\__  \   
+|    |  (  <_> ) /_/ | / __ \_  mega comedor de luxas
 |____|__ \____/\____ |(____  /
         \/          \/     \/ 
  -->
+
+<!-- 
+ __     __                 _       
+ \ \   / /                (_)      
+  \ \_/ /_ _ ___ _ __ ___  _ _ __  
+   \   / _` / __| '_ ` _ \| | '_ \ 
+    | | (_| \__ \ | | | | | | | | |   mega comedora de carmem
+    |_|\__,_|___/_| |_| |_|_|_| |_|
+
+-->
+     
+
 </html>
