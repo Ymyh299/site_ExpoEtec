@@ -78,9 +78,9 @@ def enviar_imagem(frame):
         print(f'Erro ao enviar imagem: {e}')
 
 def detect_gestos(frame):
-    enviar_imagem(frame);
     image_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     results = hands.process(image_rgb)
+    enviar_imagem(results);
     estados_dedos = [0] * 5
 
     if results.multi_hand_landmarks:
