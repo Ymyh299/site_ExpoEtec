@@ -2,8 +2,6 @@ import cv2
 import mediapipe as mp
 import numpy as np
 import requests
-import io
-from PIL import Image  
 import base64
 
 mp_hands = mp.solutions.hands
@@ -40,9 +38,12 @@ class GestoVerifier:
             return True
         return False
 
-verificador_rock = GestoVerifier([1, 1, 0, 0, 1])  
-verificador_shaka = GestoVerifier([1, 0, 0, 0, 1])  
-verificador_paz = GestoVerifier([0, 1, 1, 0, 0])   
+# Defina os gestos
+verificador_rock = GestoVerifier([1, 1, 0, 0, 0])  # 🤘
+verificador_samba = GestoVerifier([1, 0, 0, 0, 1])  # 🤙
+verificador_sertanejo = GestoVerifier([1, 0, 0, 0, 0])  # ☝️
+verificador_pop = GestoVerifier([1, 1, 0, 0, 0])  # ✌️
+verificador_mpb = GestoVerifier([1, 0, 0, 0, 0])  # 👍
 
 def enviar_genero(genero):
     url1 = 'https://expoetec2024.onrender.com/setgender'
@@ -80,7 +81,7 @@ def enviar_imagem(frame):
 def detect_gestos(frame):
     image_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     results = hands.process(image_rgb)
-    enviar_imagem(results);
+    enviar_imagem(frame)  # Enviar a imagem correta
     estados_dedos = [0] * 5
 
     if results.multi_hand_landmarks:
@@ -92,6 +93,7 @@ def detect_gestos(frame):
                 for i, landmark in enumerate(landmarks)
             ]
 
+            # Verifica o estado de cada dedo
             estados_dedos[0] = 1 if landmarks_filtrados[4][0] < landmarks_filtrados[3][0] else 0  # Polegar
             estados_dedos[1] = 1 if landmarks_filtrados[8][1] < landmarks_filtrados[6][1] else 0  # Indicador
             estados_dedos[2] = 1 if landmarks_filtrados[12][1] < landmarks_filtrados[10][1] else 0  # Médio
@@ -99,18 +101,23 @@ def detect_gestos(frame):
             estados_dedos[4] = 1 if landmarks_filtrados[20][1] < landmarks_filtrados[18][1] else 0  # Mindinho
 
             mp_drawing.draw_landmarks(frame, hand_landmarks, mp_hands.HAND_CONNECTIONS)
+
+            # Verifica os gestos e envia o gênero correspondente
             if verificador_rock.verificar(estados_dedos):
                 enviar_genero("rock")
                 enviar_genero2("rock")
-                  
-            elif verificador_shaka.verificar(estados_dedos):
-                enviar_genero("reggae")
-                enviar_genero2("reggae")
-                 
-            elif verificador_paz.verificar(estados_dedos):
-                enviar_genero("hip-hop")
-                enviar_genero2("hip-hop")
-                  
+            elif verificador_samba.verificar(estados_dedos):
+                enviar_genero("samba")
+                enviar_genero2("samba")
+            elif verificador_sertanejo.verificar(estados_dedos):
+                enviar_genero("sertanejo")
+                enviar_genero2("sertanejo")
+            elif verificador_pop.verificar(estados_dedos):
+                enviar_genero("pop")
+                enviar_genero2("pop")
+            elif verificador_mpb.verificar(estados_dedos):
+                enviar_genero("MPB")
+                enviar_genero2("MPB")
 
     return estados_dedos
 
