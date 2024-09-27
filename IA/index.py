@@ -93,13 +93,13 @@ def detect_gestos(frame):
             # Verificação dos gestos e envio do gênero correspondente
             if verificador_rock.verificar(estados_dedos):
                 enviar_genero("rock")
-                print("Rock")
+                print("")
             elif verificador_sertanejo.verificar(estados_dedos):
                 enviar_genero("sertanejo")
-                print("Sertanejo")
+                print("")
             elif verificador_pop.verificar(estados_dedos):
                 enviar_genero("pop")
-                print("Pop")
+                print("")
 
     return estados_dedos
 

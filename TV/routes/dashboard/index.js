@@ -10,7 +10,7 @@ routes.get('/', (req, res) => {
     res.sendFile('index.html');
 });
 
-routes.get('/getGender', async (req, res) => {
+routes.get('/getgender', async (req, res) => {
     res.json({gender: gender})
 })
 
