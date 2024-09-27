@@ -6,6 +6,7 @@ import base64
 
 # Inicialização de variáveis globais e configurações
 mp_hands = mp.solutions.hands
+mp_drawing = mp.solutions.drawing_utils  # Para desenhar os landmarks
 hands = mp_hands.Hands(static_image_mode=False, max_num_hands=1, min_detection_confidence=0.8, min_tracking_confidence=0.8)
 
 # Classe para filtragem de landmarks com média móvel
@@ -32,16 +33,16 @@ class GestoVerifier:
         if gesto_atual == self.gesto:
             self.contagem_consecutiva += 1
             if self.contagem_consecutiva >= self.threshold:
-                self.contagem_consecutiva = 0 
+                self.contagem_consecutiva = 0
                 return True
         else:
             self.contagem_consecutiva = 0
         return False
 
 # Definição dos gestos
-verificador_rock = GestoVerifier([1, 0, 0, 1, 0])  # 🤘
+verificador_rock = GestoVerifier([0, 1, 0, 0, 1])  # 🤘
 verificador_sertanejo = GestoVerifier([1, 0, 0, 0, 1])  # 🤙
-verificador_pop = GestoVerifier([1, 1, 0, 0, 0])  # ✌️
+verificador_pop = GestoVerifier([0, 1, 1, 0, 0])  # ✌️
 
 # Função para enviar dados de gênero
 def enviar_genero(genero):
@@ -64,12 +65,10 @@ def enviar_imagem(frame):
         print(f'Erro ao enviar imagem: {e}')
 
 # Função para detecção de gestos
-# Função para detecção de gestos
 def detect_gestos(frame):
     image_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     results = hands.process(image_rgb)
 
-    # Inicializa 'estados_dedos' com um valor padrão (ex: lista de zeros)
     estados_dedos = [0, 0, 0, 0, 0]
 
     if results.multi_hand_landmarks:
@@ -88,16 +87,21 @@ def detect_gestos(frame):
                 1 if landmarks_filtrados[20][1] < landmarks_filtrados[18][1] else 0  # Mindinho
             ]
 
+            # Desenhar landmarks e conexões na imagem
+            mp_drawing.draw_landmarks(frame, hand_landmarks, mp_hands.HAND_CONNECTIONS)
+
             # Verificação dos gestos e envio do gênero correspondente
             if verificador_rock.verificar(estados_dedos):
                 enviar_genero("rock")
+                print("Rock")
             elif verificador_sertanejo.verificar(estados_dedos):
                 enviar_genero("sertanejo")
+                print("Sertanejo")
             elif verificador_pop.verificar(estados_dedos):
                 enviar_genero("pop")
+                print("Pop")
 
     return estados_dedos
-
 
 # Função principal
 def main():
@@ -111,9 +115,9 @@ def main():
         if not ret:
             break
 
-        enviar_imagem(frame);
-        detect_gestos(frame);
-        cv2.imshow('ExpoEtec 2024', frame)
+        enviar_imagem(frame)  # Enviar imagem ao servidor
+        detect_gestos(frame)  # Detectar gestos
+        cv2.imshow('ExpoEtec 2024', frame)  # Mostrar a imagem com landmarks
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
