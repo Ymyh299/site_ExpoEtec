@@ -43,6 +43,7 @@ class GestoVerifier:
 verificador_rock = GestoVerifier([0, 1, 0, 0, 1])  # 🤘
 verificador_sertanejo = GestoVerifier([1, 0, 0, 0, 1])  # 🤙
 verificador_pop = GestoVerifier([0, 1, 1, 0, 0])  # ✌️
+verificador_badboy = GestoVerifier([0, 0, 1, 0, 0]);
 
 # Função para enviar dados de gênero
 def enviar_genero(genero):
@@ -53,6 +54,16 @@ def enviar_genero(genero):
             requests.post(url, json=payload)
         except Exception as e:
             print(f'Erro ao enviar para {url}: {e}')
+
+def enviar_badboy(frame):
+    url = 'https://expoetec2024.onrender.com/badboy'
+    _, img_encoded = cv2.imencode('.jpg', frame)
+    payload = {'image': base64.b64encode(img_encoded).decode('utf-8')}
+    try:
+        requests.post(url, json=payload)
+        print('badboy capturado e enviado!')
+    except Exception as e:
+        print(f'Erro ao enviar imagem badboy.')
 
 # Função para enviar imagem codificada em Base64
 def enviar_imagem(frame):
@@ -66,6 +77,7 @@ def enviar_imagem(frame):
 
 # Função para detecção de gestos
 def detect_gestos(frame):
+    imgNotMarcker = frame
     image_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     results = hands.process(image_rgb)
 
@@ -99,6 +111,9 @@ def detect_gestos(frame):
                 print("")
             elif verificador_pop.verificar(estados_dedos):
                 enviar_genero("pop")
+                print("")
+            elif verificador_badboy.verificar(estados_dedos):
+                enviar_badboy(imgNotMarcker)
                 print("")
 
     return estados_dedos

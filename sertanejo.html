@@ -1,17 +1,4 @@
-var resp = ''
-
-async function getgender(){
-    const url = '/getgender';
-
-    const json = await fetch(url)
-    const valor = await json.json()
-    
-    if(valor.gender != resp){
-        resp = valor.gender;
-        switch(resp){
-            case 'rock':
-                document.getElementById('gender').innerHTML = `
-                <p class="text-white absolute top-4 text-3xl font-sans">Rock</p>
+<p class="text-white absolute top-4 text-3xl font-sans">Rock</p>
       <hr class="w-[40vw] absolute top-[10vh]">
       <div class="cont w-[40vw] h-[40vh] absolute bottom-0 flex fo">
 
@@ -63,18 +50,3 @@ async function getgender(){
 
         </div>
       </div>
-    `
-    break;
-    case 'sertanejo':
-        document.getElementById('gender').innerHTML = `
-         
-        `
-        }
-    }
-    
-
-    
-}
-
-
-setInterval(getgender, 100);
