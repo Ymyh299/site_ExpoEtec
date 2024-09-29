@@ -5,6 +5,7 @@ const routes = express.Router();
 const getMusic = require('../../controller/getMuisca.cjs');
 
 var gender = '';
+var badboys = 0;
 
 routes.get('/', (req, res) => {
     res.sendFile('index.html');
@@ -12,6 +13,14 @@ routes.get('/', (req, res) => {
 
 routes.get('/getgender', async (req, res) => {
     res.json({gender: gender})
+})
+
+routes.get('/accountbadboy', async (req, res) => {
+    badboys++
+    res.json({sucess: true});
+})
+routes.get('/getnumbadboy', async (req, res) => {
+    res.json({ numbad: badboys});
 })
 
 routes.get('/getMusic', async (req, res) => {
