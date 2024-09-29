@@ -3,6 +3,7 @@ import mediapipe as mp
 import numpy as np
 import requests
 import base64
+import threading
 
 # Inicialização de variáveis globais e configurações
 mp_hands = mp.solutions.hands
@@ -11,7 +12,7 @@ hands = mp_hands.Hands(static_image_mode=False, max_num_hands=1, min_detection_c
 
 # Classe para filtragem de landmarks com média móvel
 class MediaMovel:
-    def __init__(self, tamanho=5):
+    def __init__(self, tamanho=8):
         self.valores = np.zeros((tamanho, 3))  # Uso de NumPy para maior eficiência
         self.index = 0
 
@@ -24,7 +25,7 @@ filtros_landmarks = [MediaMovel() for _ in range(21)]
 
 # Verificador de gestos com contagem consecutiva
 class GestoVerifier:
-    def __init__(self, gesto, threshold=5):
+    def __init__(self, gesto, threshold=8):
         self.gesto = gesto
         self.threshold = threshold
         self.contagem_consecutiva = 0
@@ -47,35 +48,43 @@ verificador_badboy = GestoVerifier([0, 0, 1, 0, 0])
 
 # Função para enviar dados de gênero
 def enviar_genero(genero):
-    urls = ['https://expoetec2024.onrender.com/setgender', 'http://localhost:3030/setgender']
-    payload = {'gend': genero}
-    for url in urls:
+    def enviar():
+        urls = ['https://expoetec2024.onrender.com/setgender', 'http://localhost:3030/setgender']
+        payload = {'gend': genero}
+        for url in urls:
+            try:
+                requests.post(url, json=payload)
+            except Exception as e:
+                print(f'Erro ao enviar para {url}: {e}')
+    threading.Thread(target=enviar).start()
+
+# Função para enviar imagem do gesto "badboy"
+def enviar_badboy(frame):
+    def enviar():
+        url = 'https://expoetec2024.onrender.com/badboy'
+        url2 = 'http://localhost:3030/accountbadboy'
+        _, img_encoded = cv2.imencode('.jpg', frame)
+        print("foi")  # Este print é para verificar se a função está sendo chamada
+        payload = {'image': base64.b64encode(img_encoded).decode('utf-8')}
         try:
+            requests.get(url2)
             requests.post(url, json=payload)
         except Exception as e:
-            print(f'Erro ao enviar para {url}: {e}')
+            print(f'Erro ao enviar imagem badboy: {e}')
 
-def enviar_badboy(frame):
-    url = 'https://expoetec2024.onrender.com/badboy'
-    url2 = 'http://localhost:3030/accountbadboy'
-    _, img_encoded = cv2.imencode('.jpg', frame)
-    payload = {'image': base64.b64encode(img_encoded).decode('utf-8')}
-    try:
-        requests.get(url2)
-        requests.post(url, json=payload)
-        print('badboy capturado e enviado!')
-    except Exception as e:
-        print(f'Erro ao enviar imagem badboy.')
+    threading.Thread(target=enviar).start()
 
 # Função para enviar imagem codificada em Base64
 def enviar_imagem(frame):
-    url = 'http://localhost:3030/setfeedback'
-    _, img_encoded = cv2.imencode('.jpg', frame)
-    payload = {'image': base64.b64encode(img_encoded).decode('utf-8')}
-    try:
-        requests.post(url, json=payload)
-    except Exception as e:
-        print(f'Erro ao enviar imagem: {e}')
+    def enviar():
+        url = 'http://localhost:3030/setfeedback'
+        _, img_encoded = cv2.imencode('.jpg', frame)
+        payload = {'image': base64.b64encode(img_encoded).decode('utf-8')}
+        try:
+            requests.post(url, json=payload)
+        except Exception as e:
+            print(f'Erro ao enviar imagem: {e}')
+    threading.Thread(target=enviar).start()
 
 # Função para detecção de gestos
 def detect_gestos(frame):
@@ -103,20 +112,17 @@ def detect_gestos(frame):
 
             # Desenhar landmarks e conexões na imagem
             mp_drawing.draw_landmarks(frame, hand_landmarks, mp_hands.HAND_CONNECTIONS)
-
+            print(estados_dedos)
             # Verificação dos gestos e envio do gênero correspondente
             if verificador_rock.verificar(estados_dedos):
                 enviar_genero("rock")
-                print("")
             elif verificador_sertanejo.verificar(estados_dedos):
                 enviar_genero("sertanejo")
-                print("")
             elif verificador_pop.verificar(estados_dedos):
                 enviar_genero("pop")
-                print("")
             elif verificador_badboy.verificar(estados_dedos):
                 enviar_badboy(imgNotMarcker)
-                print("")
+                print("badboy")
 
     enviar_imagem(frame)
     return estados_dedos
