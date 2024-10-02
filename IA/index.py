@@ -112,7 +112,6 @@ def detect_gestos(frame):
 
             # Desenhar landmarks e conexões na imagem
             mp_drawing.draw_landmarks(frame, hand_landmarks, mp_hands.HAND_CONNECTIONS)
-            print(estados_dedos)
             # Verificação dos gestos e envio do gênero correspondente
             if verificador_rock.verificar(estados_dedos):
                 enviar_genero("rock")
