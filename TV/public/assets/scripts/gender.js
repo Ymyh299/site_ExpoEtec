@@ -64,6 +64,9 @@ async function getgender(){
         </div>
       </div>
     `
+
+          play('rock');
+
     break;
     case 'sertanejo':
         document.getElementById('gender').innerHTML = `
@@ -120,6 +123,7 @@ async function getgender(){
         </div>
       </div>
     `
+    play('sertanejo')
     break;
     case 'pop':
       document.getElementById('gender').innerHTML = `
@@ -176,6 +180,7 @@ async function getgender(){
         </div>
       </div>
       `
+      play('pop')
     break;
         }
     }
@@ -186,3 +191,19 @@ async function getgender(){
 
 
 setInterval(getgender, 100);
+
+
+
+function play(g){
+  switch (g){
+    case 'pop':
+
+    break;
+    case 'rock':
+
+    break;
+    case 'sertanejo': 
+
+    break;
+  }
+}
