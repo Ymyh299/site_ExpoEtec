@@ -192,18 +192,37 @@ async function getgender(){
 
 setInterval(getgender, 100);
 
-
+const video = document.getElementById('video');
+const feed = document.getElementById('feedback')
+var intervalo
 
 function play(g){
   switch (g){
     case 'pop':
-
+    video.src = './assets/video/pop2.mp4'
+    video.classList.remove('hidden');
+    feed.classList.add('hidden');
+    clearInterval(intervalo);
+    intervalo = setInterval(hidden, 9000);
     break;
     case 'rock':
-
+    video.src = './assets/video/rock2.mp4'
+    video.classList.remove('hidden');
+    feed.classList.add('hidden');
+    clearInterval(intervalo);
+    intervalo = setInterval(hidden, 9000);
     break;
     case 'sertanejo': 
-
+    video.src = './assets/video/sert2.mp4'
+    video.classList.remove('hidden');
+    feed.classList.add('hidden');
+    clearInterval(intervalo);
+    intervalo = setInterval(hidden, 9000);
     break;
   }
+}
+
+function hidden(){
+  video.classList.add('hidden');
+  feed.classList.remove('hidden');
 }

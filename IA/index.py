@@ -5,15 +5,13 @@ import requests
 import base64
 import threading
 
-# Inicialização de variáveis globais e configurações
 mp_hands = mp.solutions.hands
-mp_drawing = mp.solutions.drawing_utils  # Para desenhar os landmarks
+mp_drawing = mp.solutions.drawing_utils  
 hands = mp_hands.Hands(static_image_mode=False, max_num_hands=1, min_detection_confidence=0.8, min_tracking_confidence=0.8)
 
-# Classe para filtragem de landmarks com média móvel
 class MediaMovel:
     def __init__(self, tamanho=8):
-        self.valores = np.zeros((tamanho, 3))  # Uso de NumPy para maior eficiência
+        self.valores = np.zeros((tamanho, 3))  
         self.index = 0
 
     def filtrar(self, valor_atual):
@@ -23,7 +21,6 @@ class MediaMovel:
 
 filtros_landmarks = [MediaMovel() for _ in range(21)]
 
-# Verificador de gestos com contagem consecutiva
 class GestoVerifier:
     def __init__(self, gesto, threshold=8):
         self.gesto = gesto
@@ -40,13 +37,11 @@ class GestoVerifier:
             self.contagem_consecutiva = 0
         return False
 
-# Definição dos gestos
 verificador_rock = GestoVerifier([0, 1, 0, 0, 1])  # 🤘
 verificador_sertanejo = GestoVerifier([1, 0, 0, 0, 1])  # 🤙
 verificador_pop = GestoVerifier([0, 1, 1, 0, 0])  # ✌️
 verificador_badboy = GestoVerifier([0, 0, 1, 0, 0])
 
-# Função para enviar dados de gênero
 def enviar_genero(genero):
     def enviar():
         urls = ['https://expoetec2024.onrender.com/setgender', 'http://localhost:3030/setgender']
@@ -55,26 +50,24 @@ def enviar_genero(genero):
             try:
                 requests.post(url, json=payload)
             except Exception as e:
-                print(f'Erro ao enviar para {url}: {e}')
+                print(f'')
     threading.Thread(target=enviar).start()
 
-# Função para enviar imagem do gesto "badboy"
 def enviar_badboy(frame):
     def enviar():
         url = 'https://expoetec2024.onrender.com/badboy'
         url2 = 'http://localhost:3030/accountbadboy'
         _, img_encoded = cv2.imencode('.jpg', frame)
-        print("foi")  # Este print é para verificar se a função está sendo chamada
+        print("")
         payload = {'image': base64.b64encode(img_encoded).decode('utf-8')}
         try:
             requests.get(url2)
             requests.post(url, json=payload)
         except Exception as e:
-            print(f'Erro ao enviar imagem badboy: {e}')
+            print(f'')
 
     threading.Thread(target=enviar).start()
 
-# Função para enviar imagem codificada em Base64
 def enviar_imagem(frame):
     def enviar():
         url = 'http://localhost:3030/setfeedback'
@@ -83,10 +76,9 @@ def enviar_imagem(frame):
         try:
             requests.post(url, json=payload)
         except Exception as e:
-            print(f'Erro ao enviar imagem: {e}')
+            print(f'')
     threading.Thread(target=enviar).start()
 
-# Função para detecção de gestos
 def detect_gestos(frame):
     imgNotMarcker = frame.copy()
     image_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -101,18 +93,15 @@ def detect_gestos(frame):
                 for i, landmark in enumerate(hand_landmarks.landmark)
             ]
 
-            # Verificação dos dedos (0 para não levantado, 1 para levantado)
             estados_dedos = [
-                1 if landmarks_filtrados[4][0] < landmarks_filtrados[3][0] else 0,  # Polegar
-                1 if landmarks_filtrados[8][1] < landmarks_filtrados[6][1] else 0,  # Indicador
-                1 if landmarks_filtrados[12][1] < landmarks_filtrados[10][1] else 0, # Médio
-                1 if landmarks_filtrados[16][1] < landmarks_filtrados[14][1] else 0, # Anelar
-                1 if landmarks_filtrados[20][1] < landmarks_filtrados[18][1] else 0  # Mindinho
+                1 if landmarks_filtrados[4][0] < landmarks_filtrados[3][0] else 0, 
+                1 if landmarks_filtrados[8][1] < landmarks_filtrados[6][1] else 0,  
+                1 if landmarks_filtrados[12][1] < landmarks_filtrados[10][1] else 0, 
+                1 if landmarks_filtrados[16][1] < landmarks_filtrados[14][1] else 0, 
+                1 if landmarks_filtrados[20][1] < landmarks_filtrados[18][1] else 0  
             ]
 
-            # Desenhar landmarks e conexões na imagem
             mp_drawing.draw_landmarks(frame, hand_landmarks, mp_hands.HAND_CONNECTIONS)
-            # Verificação dos gestos e envio do gênero correspondente
             if verificador_rock.verificar(estados_dedos):
                 enviar_genero("rock")
             elif verificador_sertanejo.verificar(estados_dedos):
@@ -121,12 +110,11 @@ def detect_gestos(frame):
                 enviar_genero("pop")
             elif verificador_badboy.verificar(estados_dedos):
                 enviar_badboy(imgNotMarcker)
-                print("badboy")
+                print("")
 
     enviar_imagem(frame)
     return estados_dedos
 
-# Função principal
 def main():
     cap = cv2.VideoCapture(0)
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
@@ -138,8 +126,8 @@ def main():
         if not ret:
             break
 
-        detect_gestos(frame)  # Detectar gestos
-        cv2.imshow('ExpoEtec 2024', frame)  # Mostrar a imagem com landmarks
+        detect_gestos(frame)  
+        cv2.imshow('ExpoEtec 2024', frame)  
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
