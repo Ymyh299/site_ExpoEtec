@@ -44,7 +44,7 @@ verificador_badboy = GestoVerifier([0, 0, 1, 0, 0])
 
 def enviar_genero(genero):
     def enviar():
-        urls = ['https://expoetex2024-production.up.railway.app//setgender', 'http://localhost:3030/setgender']
+        urls = ['https://expoetec2024.onrender.com/setgender', 'http://localhost:3030/setgender']
         payload = {'gend': genero}
         for url in urls:
             try:
@@ -55,7 +55,7 @@ def enviar_genero(genero):
 
 def enviar_badboy(frame):
     def enviar():
-        url = 'https://expoetex2024-production.up.railway.app//badboy'
+        url = 'https://expoetec2024.onrender.com/badboy'
         url2 = 'http://localhost:3030/accountbadboy'
         _, img_encoded = cv2.imencode('.jpg', frame)
         print("")
@@ -127,7 +127,7 @@ def main():
             break
 
         detect_gestos(frame)  
-        cv2.imshow('ExpoEtec 2024 - 2° IPI', frame)  
+        cv2.imshow('ExpoEtec 2024', frame)  
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
